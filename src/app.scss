@@ -1,0 +1,90 @@
+@keyframes testeAnimacao{
+    from {left: -400px;}
+    to{left: 0px;}
+}
+
+@keyframes rotate360{
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+
+.main {
+
+    p{
+        padding: 1rem;
+        font-weight: 500;
+    }
+
+    .animacao{
+        position: relative;
+        animation-name: testeAnimacao;
+        animation-duration: 2s;
+        animation-iteration-count: 1;
+        animation-direction: normal;
+        text-align: justify;
+    }
+
+    .reactLogo{
+        animation: rotate360 3s linear infinite;
+    }
+
+    .sciel{
+        background-color: rgb(34, 34, 34);
+        box-shadow: 0 4px 8px 0 rgba(66, 66, 66, 0.2);
+        transition: 0.3s;
+        border-radius: 5px;
+        width: 85%;
+        height: 15rem;
+
+        &:hover{
+        box-shadow: 0 8px 16px 0 rgba(66, 66, 66, 0.2);
+        }
+
+        .scielImg{
+            max-width: 100%;
+            border-radius: 5px 5px 0 0;
+            object-fit: cover;
+            height: 65%;
+            width: 100%;
+            object-position: 0px -13px;
+        }
+
+        .cardText{
+            padding: 3px 16px;
+            background-color: var(--destaque);
+
+            h1{
+                font-weight: 600;
+                font-size: 1.3rem;
+                margin-bottom: 5px;
+            }
+
+            p{
+                padding: 0;
+            }
+        }
+    }
+        .carrousel {
+            width: 100%;
+            max-width: 600px; /* Ou o tamanho que você quiser */
+            margin: 0 auto;
+            border: 2px solid #ccc; /* Só para você enxergar a borda por enquanto */
+        
+            .swiper {
+                width: 100%;
+                height: 400px; 
+            }
+
+            .swiper-slide img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* Isso aqui é sagrado para não achatar a imagem */
+            }
+        }
+}
+

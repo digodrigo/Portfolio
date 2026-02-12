@@ -1,0 +1,7 @@
+{
+    "tabela":[
+        {"senha":"teste123", "servico":"Discord"},
+        {"senha":"teste123", "servico":"Gmail"},
+        {"senha":"tTeste321", "servico":"Youtube"}
+    ]
+}
