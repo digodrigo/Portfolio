@@ -13,7 +13,7 @@
 }
 
 html{
-    background-color: gray;
+    background-color: var(--destaque);
 
     body{
 
@@ -85,15 +85,20 @@ html{
             }
 
             .main{
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            background-color: var(--background);
-            color: var(--fonte);
-            margin: 0 0.5rem 0 0.5rem;
-            border-radius: 10px;
-            width: 95vw;
-            gap: 1rem;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                position: relative;
+                background-color: var(--background);
+                color: var(--fonte);
+                margin: 0 0.5rem 0 0.5rem;
+                border-radius: 10px;
+                width: 97vw;
+                gap: 1rem;
+
+                @media (min-width: 768px) {
+
+                }
         }
         }
     }
