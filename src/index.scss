@@ -38,6 +38,9 @@ html{
                 border-bottom-left-radius: 10px;
                 border-bottom-right-radius: 10px;
                 box-shadow: 1px 2px 4px 0px transparent;
+                @media (min-width: 768px) {
+                    font-size: 3rem;
+                }
 
                 .divModo{
                     display: flex;
@@ -49,14 +52,14 @@ html{
                         fill: var(--fonte);
                     }
                     .tema{
-                        width: 3rem;
-                        height: 2rem;
+                        width: 4rem;
+                        height: 2.7rem;
                         background-color: var(--destaque);
                         border-color: transparent;
                         border-radius: 20px;
 
                         img{
-                            width: 1.1rem;
+                            width: 1.6rem;
                         }
 
                         .iconLuaDireita{

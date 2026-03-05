@@ -1,80 +1,129 @@
-body{
-    @keyframes labelAnimation{
-        from {top: 0.6rem;}
-        to {top: -1.1rem;}
+:root{
+    --aberto:112%;
+    --fechado:-100%;
+}
+
+body {
+    @media (min-width:768px){
+        --aberto:133%;
+        --fechado:-100%;  
+    }
+    @keyframes labelAnimation {
+        from {
+            top: 0.6rem;
+        }
+
+        to {
+            top: -1.1rem;
+        }
     }
 
-    @keyframes formTableAnimationAberto{
-        from {left: -23rem;}
-        to {left : 1.5rem}
+    @keyframes formTableAnimationAberto {
+        from {
+            transform: translateX(var(--fechado));
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(var(--aberto));
+            opacity: 1;
+        }
     }
 
-    @keyframes formTableAnimationFechado{
-        from {left: 1.5rem}
-        to {left : -23rem}
+    @keyframes formTableAnimationFechado {
+        from {
+            transform: translateX(var(--aberto));
+            opacity: 1;
+        }
+
+        to {
+            transform: translateX(var(--fechado));
+            opacity: 0;
+        }  
     }
 
-    @keyframes divGraficoAnimationAberto{
-        from {right:510px}
-        to {right:0px}
+    @keyframes divGraficoAnimationAberto {
+        from {
+            right: 510px
+        }
+
+        to {
+            right: 0px
+        }
     }
 
-    .formTableCentroAberto{
+    .formTableCentroAberto {
         animation: formTableAnimationAberto 1s 1 forwards;
     }
 
-    .formTableCentroFechado{
+    .formTableCentroFechado {
         animation: formTableAnimationFechado 1s 1 forwards;
     }
 
-    .divGraficoAberto{
+    .divGraficoAberto {
         animation: divGraficoAnimationAberto 1s 1 forwards;
     }
 
     .main {
-        .botoesForm{
+        .botoesForm {
             margin-top: 1rem;
             display: flex;
             width: 100%;
             font-size: 0;
-            .botaoAbrirForm, .botaoAbrirEstatistica{
+            .botaoAbrirForm,
+            .botaoAbrirEstatistica {
                 width: 50%;
                 display: flex;
                 gap: 0.1rem;
                 justify-content: center;
                 align-items: center;
-                p{
+
+                p {
                     font-size: 1rem;
+
+                    @media (min-width:768px){
+                        font-size: 1.5rem;
+                    }
                 }
             }
         }
 
-        table{
-            margin: 1rem 0 1rem 0;
-            border-radius: 0.5rem;
+        table {
             border-collapse: collapse;
-            border-spacing: 0;
-            width: 90%;
-        thead{
-            tr{
-                background-color: rgb(0, 255, 76);
-                color: black;
-                th{
-                    padding: 1rem;
-                    width: 30%;
-                }   
+            table-layout: fixed;
+            width: 100%;
+
+            @media (min-width: 768px) {
+                width: 95%;
+                font-size: 1.6rem;
             }
-        }
-            tbody{
-                tr{
-                    td{
+
+            thead {
+                tr {
+                    background-color: rgb(0, 255, 76);
+                    color: black;
+                    th {
+                        padding: 1rem;
+                    }
+                }
+            }
+
+            tbody {
+                text-align: center;
+                vertical-align: center;
+                @media (min-width: 768px) {
+                    width: 95%;
+                    font-size: 1.5rem;
+                }
+                tr {
+                    td {
                         padding: 1rem;
                     }
                 }
             }
         }
 
-        .formTable{
+        .formTable {
             position: absolute;
             top: 0.8rem;
             left: -23rem;
@@ -85,86 +134,112 @@ body{
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
+            font-size: 2rem;
 
-            .sucess{
+            @media (min-width: 768px) {
+                top: 0.8rem;
+                left: -55rem;
+            }
+
+
+
+            .Sucesso {
                 background-color: rgb(0, 255, 76);
                 padding: 1rem;
             }
 
-            .fail{
+            .Falha {
                 background-color: rgb(255, 70, 46);
                 padding: 1rem;
             }
 
-            #fechaFormTable{
+            #fechaFormTable {
                 position: absolute;
                 top: 10px;
-                left:6px
+                left: 6px
             }
 
-            form{
+            form {
                 position: relative;
                 display: flex;
                 flex-direction: column;
                 gap: 1.5rem;
 
-                input, select{
+                @media (min-width: 768px) {
+                    font-size: 1.2rem;
+                }
+
+                input,
+                select {
                     padding: 10px;
                     border: 0px solid transparent;
                     border-radius: 10px;
 
-                    &[type=button]{
+                    &[type=button] {
                         font-size: medium;
                     }
 
-                    &:focus{
+                    &:focus {
                         outline: none;
                     }
-                    &:nth-of-type(1){ 
-                        &:focus, :valid{
+
+                    &:nth-of-type(1) {
+
+                        &:focus,
+                        :valid {
                             outline: none;
                         }
-                        &:focus ~ label:nth-of-type(1), &:valid ~ label:nth-of-type(1) {
+
+                        &:focus~label:nth-of-type(1),
+                        &:valid~label:nth-of-type(1) {
                             transform: translateY(-1.69rem);
                             color: var(--fonte);
                         }
                     }
-                    &:nth-of-type(2){
-                        &:focus, :valid{
+
+                    &:nth-of-type(2) {
+
+                        &:focus,
+                        :valid {
                             outline: none;
                         }
-                        &:focus ~ label:nth-of-type(3), &:valid ~ label:nth-of-type(3) {
+
+                        &:focus~label:nth-of-type(3),
+                        &:valid~label:nth-of-type(3) {
                             transform: translateY(2.2rem);
                             color: var(--fonte);
                         }
                     }
                 }
 
-                select{
-                    &:nth-of-type(1){
-                        &:focus ~ label:nth-of-type(2), &:valid ~ label:nth-of-type(2){
+                select {
+                    &:nth-of-type(1) {
+
+                        &:focus~label:nth-of-type(2),
+                        &:valid~label:nth-of-type(2) {
                             transform: translateY(-1.6rem);
                             color: var(--fonte);
                         }
                     }
                 }
 
-                label{
+                label {
                     position: absolute;
                     color: black;
                     transition: all 1s ease-in-out;
                     pointer-events: none;
-                    &:nth-of-type(1){
+
+                    &:nth-of-type(1) {
                         top: 0.45rem;
                         left: 0.6rem;
                     }
 
-                    &:nth-of-type(2){
+                    &:nth-of-type(2) {
                         top: 4.18rem;
                         left: 0.5rem;
                     }
 
-                    &:nth-of-type(3){
+                    &:nth-of-type(3) {
                         top: 4.20rem;
                         left: 0.5rem;
                     }
@@ -172,16 +247,17 @@ body{
             }
         }
 
-        .divGrafico{
+        .divGrafico {
             width: 100%;
             background-color: var(--background);
             position: absolute;
-            right: 510px;
+            right: -105%;
 
-            .divCanvas{
+            .divCanvas {
                 position: relative;
-                padding:0.5rem;
-                .fechaDivGrafico{
+                padding: 0.5rem;
+
+                .fechaDivGrafico {
                     position: absolute;
                     top: 41px;
                     left: 5px;

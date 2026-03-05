@@ -1,11 +1,10 @@
-import {Outlet} from 'react-router-dom'
-import './anota.scss'
-import { useState, useEffect } from 'react'
-import React from 'react';
+import {Outlet} from 'react-router-dom';
+import './anota.scss';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
-
+import { useState, useEffect } from 'react'
 ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.defaults.font.size = 18;
 
 function teste(){
     const [active, setActive] = useState("");
@@ -26,16 +25,19 @@ function teste(){
 
     const [inputEspecifico, setInputEspecifico] = useState("");
     
-    const [dadosGrafico, setDadosGrafico] = useState("");
+    const [dadosAggregate, setDadosAggregate] = useState([]);
 
-    const [quantidadeFiltrado ,setQuantidadeFiltrado] = useState("");
+    const dadosNomeFiltrados = dadosAggregate.map(nomes=>nomes._id);
+
+    const dadosQntFiltrados = dadosAggregate.map(qnt=>qnt.quantidade);
 
     const grafico = {
-        labels: [dadosGrafico[0], dadosGrafico[1], dadosGrafico[2], dadosGrafico[3]],
+        responsive: true,
+        labels: dadosNomeFiltrados,
         datasets:[
             {
                 label: 'N° de contas',
-                data: [quantidadeFiltrado[0], quantidadeFiltrado[1], quantidadeFiltrado[2], quantidadeFiltrado[3]],
+                data: dadosQntFiltrados,
                 backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -56,21 +58,24 @@ function teste(){
             },
         ]
     }
-
+    function abrirEAtualizarGrafico(comp) { //nome auto-explicatorio
+        filtro();
+        setGraficoView(comp)
+    }
     async function buscaDados() {
         try {
-            const buscarDados = await fetch("http://localhost:3000/carteira", {
-                method: "GET"
+            const buscarDados = await fetch("http://localhost:3000/carteira", {//Manda uma requisição Get para a rota definida
+                method: "GET" 
             })
-            const dadosGet = await buscarDados.json()
+            const dadosGet = await buscarDados.json() //Aqui eu armazeno o dado recebido
             getGet(dadosGet)
         } catch {
             console.log("Erro na busca de dados");
         }
     };
 
-    async function salvar(a, b, c) {
-        let y = { senha: a, tipo: b, servico: c};
+    async function salvar(inputValSenha, inputValServico , inputValEspecifico) {
+        let arrayEnviar = { senha: inputValSenha, tipo: inputValServico, servico: inputValEspecifico};
         setInputSenha("");
         setInputServico("");
         setInputEspecifico("");
@@ -80,20 +85,20 @@ function teste(){
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(y)
+                body: JSON.stringify(arrayEnviar)
             });
             const resultado = await requestFetch.json()
             if (requestFetch.status == 201) {
-                setResultadoReq(resultado.mensagem)
+                setResultadoReq("Sucesso")
                 setTimeout(()=>{
                     setResultadoReq("");
                 }, 2000)
                 buscaDados();
             } else {
-                const createDivFail = document.createElement("div");
-                createDivFail.classList.add("falha");
-                createDivFail.innerText = "Erro ao enviar o formulario", requestFetch.status;
-                document.getElementById("divFormAdd").appendChild(createDivFail);
+                setResultadoReq("Falha")
+                setTimeout(()=>{
+                    setResultadoReq("");
+                }, 2000)
             }
         } catch {
             console.log("Deu erro");
@@ -130,17 +135,26 @@ function teste(){
     };
 
     async function enviarEditar(idItem, tabelaSenha, tabelaServico, tabelaEspecifico) {
-        let y = {senha: tabelaSenha, tipo: tabelaServico, servico: tabelaEspecifico};
+        let arrayEditado = {senha: tabelaSenha, tipo: tabelaServico, servico: tabelaEspecifico};
         try {
             const requestFetch = await fetch(`http://localhost:3000/carteira/${idItem}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(y)
+                body: JSON.stringify(arrayEditado)
             });
-            if(requestFetch.status===200){
-                
+            if (requestFetch.status == 201) {
+                setResultadoReq("Sucesso")
+                setTimeout(()=>{
+                    setResultadoReq("");
+                }, 2000)
+                buscaDados();
+            } else {
+                setResultadoReq("Falha")
+                setTimeout(()=>{
+                    setResultadoReq("");
+                }, 2000)
             }
         } catch {
 
@@ -156,19 +170,12 @@ function teste(){
     }
 
     async function filtro() {
-        const grafico = null
         try {
             const buscarDadosFiltrados = await fetch(`http://localhost:3000/carteira/filtro`, {
                 method: "GET"
             })
             const dadosFiltrados = await buscarDadosFiltrados.json();
-            const nomesFiltrados=[];
-            dadosFiltrados.map((filtroNomes)=>nomesFiltrados.push(filtroNomes._id))
-            setDadosGrafico(nomesFiltrados);
-
-            const qntFiltrados = [];
-            dadosFiltrados.map((filtroQuantidade)=>qntFiltrados.push(filtroQuantidade.quantidade));
-            setQuantidadeFiltrado(qntFiltrados);
+            setDadosAggregate(dadosFiltrados);
         } catch (error) {
             
         }
@@ -188,10 +195,10 @@ function teste(){
                     </svg>
                     <p>Adicionar</p>
                 </div>
-                <div className="botaoAbrirEstatistica" onClick={()=>setGraficoView("Aberto")}>
+                <div className="botaoAbrirEstatistica" onClick={() => abrirEAtualizarGrafico("Aberto")}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-clipboard-data-fill" viewBox="0 0 16 16">
-                    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z"/>
-                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5zM10 8a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1"/>
+                        <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5z" />
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5zM10 8a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1" />
                     </svg>
                     <p>Estatistica</p>
                 </div>
@@ -243,38 +250,36 @@ function teste(){
                     </select>
                     <label htmlFor='serv'>Serviço</label>
                     {inputServico !== "" && (
-                        <input type="text" id='especifico' value={inputEspecifico} onChange={(e) => setInputEspecifico(e.target.value)}/>
+                        <input type="text" id='especifico' value={inputEspecifico} onChange={(e) => setInputEspecifico(e.target.value)} />
                     )}
                     {inputServico !== "" && (
                         <label htmlFor='especifico'>{inputServico}</label>
                     )}
                     {botaoEditar === "" && (
-                        <input type='button' value="Enviar" onClick={() => salvar(inputSenha, inputServico , inputEspecifico)} />
+                        <input type='button' value="Enviar" onClick={() => salvar(inputSenha, inputServico, inputEspecifico)} />
                     )}
                     {botaoEditar === "Editando" && (
                         <input type='button' value="Editar" onClick={() => enviarEditar(idTabela, inputSenha, inputServico)} />
                     )}
                 </form>
                 {resultadoReq !== "" && (
-                    <div className='sucess'>
-                        {resultadoReq}
+                    <div className={resultadoReq}>
+                        <p>{`${resultadoReq}ao adicionar senha`}</p>
                     </div>
                 )}
             </div>
             <div className={`divGrafico divGrafico${graficoView}`}>
                 <div className="divCanvas">
-                    <Pie data={grafico} />  
+                    <Pie data={grafico} />
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-x-circle fechaDivGrafico" viewBox="0 0 16 16" onClick={() => setGraficoView("Fechado")}>
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                </svg> 
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                    </svg>
                 </div>
             </div>
             <Outlet />
         </>
     )
 }
-
-//input type="text" id="serv" value={inputServico} onChange={(e)=>setInputServico(e.target.value)} required />
 
 export default teste
