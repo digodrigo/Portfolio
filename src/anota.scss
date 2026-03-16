@@ -1,11 +1,11 @@
 :root{
-    --aberto:112%;
+    --aberto:100%;
     --fechado:-100%;
 }
 
 body {
     @media (min-width:768px){
-        --aberto:133%;
+        --aberto:100%;
         --fechado:-100%;  
     }
     @keyframes labelAnimation {
@@ -44,11 +44,13 @@ body {
 
     @keyframes divGraficoAnimationAberto {
         from {
-            right: 510px
+            transform: translateX(var(--fechado));
+            opacity: 0;
         }
 
         to {
-            right: 0px
+            transform: translateX(var(--aberto));
+            opacity: 1;
         }
     }
 
@@ -65,83 +67,113 @@ body {
     }
 
     .main {
-        .botoesForm {
-            margin-top: 1rem;
-            display: flex;
-            width: 100%;
-            font-size: 0;
-            .botaoAbrirForm,
-            .botaoAbrirEstatistica {
-                width: 50%;
-                display: flex;
-                gap: 0.1rem;
-                justify-content: center;
-                align-items: center;
 
-                p {
-                    font-size: 1rem;
+            @media (min-width:1024px){
+                height: 73vh;
+            }
 
-                    @media (min-width:768px){
-                        font-size: 1.5rem;
-                    }
+        .vault{
+
+            @media (min-width:1024px){
+                display: grid;
+                grid-template-areas: 
+                "grafico  tabela"
+                "footer  footer";
+                grid-template-columns: 1fr 1fr;
+                height: 100%;
+            }
+
+            .tabela{
+                @media (min-width:1024px){
+                    grid-area: tabela;
                 }
-            }
-        }
 
-        table {
-            border-collapse: collapse;
-            table-layout: fixed;
-            width: 100%;
+                .botoesForm {
+                    margin-top: 1rem;
+                    display: flex;
+                    width: 100%;
+                    font-size: 0;
 
-            @media (min-width: 768px) {
-                width: 95%;
-                font-size: 1.6rem;
-            }
-
-            thead {
-                tr {
-                    background-color: rgb(0, 255, 76);
-                    color: black;
-                    th {
+                    @media (min-width:1024px){
+                        margin: 0;
                         padding: 1rem;
                     }
-                }
-            }
+                    .botaoAbrirForm, .botaoAbrirEstatistica {
+                        width: 50%;
+                        display: flex;
+                        gap: 0.1rem;
+                        justify-content: center;
+                        align-items: center;
+                        p {
+                            font-size: 1rem;
 
-            tbody {
-                text-align: center;
-                vertical-align: center;
-                @media (min-width: 768px) {
-                    width: 95%;
-                    font-size: 1.5rem;
+                            @media (min-width:768px){
+                                font-size: 1.5rem;
+                            }
+                        }
+                    }
                 }
-                tr {
-                    td {
-                        padding: 1rem;
+
+                table {
+                    border-collapse: collapse;
+                    table-layout: fixed;
+                    width: 100%;
+
+                    @media (min-width: 768px) {
+                        width: 95%;
+                        font-size: 1.6rem;
+                    }
+
+                    @media (min-width: 1024px) {
+                        width: 100%;
+                        font-size: 1.6rem;
+                    }
+
+                    thead {
+                        tr {
+                            background-color: rgb(0, 255, 76);
+                            color: black;
+                            th {
+                                padding: 1rem;
+                            }
+                        }
+                    }
+
+                    tbody {
+                        text-align: center;
+                        vertical-align: center;
+                        @media (min-width: 768px) {
+                            width: 95%;
+                            font-size: 1.5rem;
+                        }
+                        tr {
+                            td {
+                                padding: 1rem;
+                            }
+                        }
                     }
                 }
             }
+
         }
 
         .formTable {
             position: absolute;
             top: 0.8rem;
-            left: -23rem;
-            width: 85vw;
-            height: 33vh;
+            left: -100%;
+            width: 100%;
             background-color: var(--destaque);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            font-size: 2rem;
+            font-size: 1.3rem;
+            padding: 0.5rem;
 
-            @media (min-width: 768px) {
-                top: 0.8rem;
-                left: -55rem;
+            .formTextos{
+                display: flex;
+                gap: 0.6rem;
             }
-
-
 
             .Sucesso {
                 background-color: rgb(0, 255, 76);
@@ -153,13 +185,8 @@ body {
                 padding: 1rem;
             }
 
-            #fechaFormTable {
-                position: absolute;
-                top: 10px;
-                left: 6px
-            }
-
-            form {
+            form{
+                padding: 1rem;
                 position: relative;
                 display: flex;
                 flex-direction: column;
@@ -169,9 +196,8 @@ body {
                     font-size: 1.2rem;
                 }
 
-                input,
-                select {
-                    padding: 10px;
+                input, select {
+                    padding: 1rem;
                     border: 0px solid transparent;
                     border-radius: 10px;
 
@@ -184,16 +210,17 @@ body {
                     }
 
                     &:nth-of-type(1) {
-
-                        &:focus,
-                        :valid {
+                        &:focus, :valid {
                             outline: none;
                         }
 
                         &:focus~label:nth-of-type(1),
                         &:valid~label:nth-of-type(1) {
-                            transform: translateY(-1.69rem);
+                            transform: translateY(-2rem);
                             color: var(--fonte);
+                            @media (min-width:768px){
+                                transform: translateY(-2.5rem);
+                            }
                         }
                     }
 
@@ -208,16 +235,18 @@ body {
                         &:valid~label:nth-of-type(3) {
                             transform: translateY(2.2rem);
                             color: var(--fonte);
+                            @media (min-width: 768px) {
+                                transform: translateY(2.0rem);
+                            }
                         }
                     }
                 }
 
                 select {
                     &:nth-of-type(1) {
-
                         &:focus~label:nth-of-type(2),
                         &:valid~label:nth-of-type(2) {
-                            transform: translateY(-1.6rem);
+                            transform: translateY(-2rem);
                             color: var(--fonte);
                         }
                     }
@@ -228,20 +257,34 @@ body {
                     color: black;
                     transition: all 1s ease-in-out;
                     pointer-events: none;
-
+                    @media (min-width: 768px) {
+                        font-size: 1.6rem;
+                    }
                     &:nth-of-type(1) {
-                        top: 0.45rem;
-                        left: 0.6rem;
+                        top: 1.5rem;
+                        left: 1.5rem;
+
+                        @media (min-width: 768px) {
+                            top: 1.2rem;
+                        }
                     }
 
                     &:nth-of-type(2) {
-                        top: 4.18rem;
-                        left: 0.5rem;
+                        top: 6rem;
+                        left: 1.5rem;
+
+                        @media (min-width: 768px) {
+                            top: 5.8rem;
+                        }
                     }
 
                     &:nth-of-type(3) {
-                        top: 4.20rem;
-                        left: 0.5rem;
+                        top: 6.2rem;
+                        left: 1.5rem;
+
+                        @media (min-width: 768px) {
+                            top: 6rem;
+                        }
                     }
                 }
             }
@@ -250,8 +293,17 @@ body {
         .divGrafico {
             width: 100%;
             background-color: var(--background);
-            position: absolute;
-            right: -105%;
+
+            @media (max-width:700){
+                position: absolute;
+                left: -105%;
+            }
+
+            @media (min-width:1024px){
+                width: 60%;
+                grid-area: grafico;
+                justify-self: center;
+            }
 
             .divCanvas {
                 position: relative;
@@ -261,7 +313,32 @@ body {
                     position: absolute;
                     top: 41px;
                     left: 5px;
+
+                    @media (min-width:1024px){
+                        opacity: 0;
+                    }
                 }
+            }
+        }
+
+        .divPaginas{
+            @media (min-width:1024px){
+                grid-area: footer;
+                text-align: center;
+                justify-self: center;
+                align-self: center;
+            }
+            display: flex;
+            gap: 0.5rem;
+            width: 15%;
+            p{
+                background-color:var(--destaque);
+                color: var(--fonte);
+                font-size: 2rem;
+                width: 33%;
+                text-align: center;
+                border: 1px solid transparent;
+                border-radius: 5px
             }
         }
     }

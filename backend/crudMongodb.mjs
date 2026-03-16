@@ -46,9 +46,18 @@ app.post("/carteira", async (req,res)=>{
 })
 
 app.get("/carteira", async (req,res)=>{
+    const pagina = parseInt(req.query.pagina) || 1; //req.query vai pegar o parâmetro enviado após uma "?"
+    const limite = 5;
+    const pular = (pagina - 1) * limite;
     try{
-        const buscarDados = await senha.find();
-        res.status(200).json(buscarDados)
+        const buscarDados = await senha.find().skip(pular).limit(limite);
+        const dadosTotal = await senha.countDocuments(); //countDocuments vai contar quantos documentos tem no banco
+        const paginaTotal = Math.ceil(dadosTotal / limite); //caso seja necessário vai arredondar o resultado da conta para cima
+        res.status(200).json({
+            dados:buscarDados,
+            paginas:paginaTotal,
+            paginaAtual: pagina
+        })
     }catch{
         console.log("Deu erro na busca de dados");
         res.status(500).json({mensagem: "Erro"})
