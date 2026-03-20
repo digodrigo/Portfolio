@@ -16,8 +16,9 @@ Este projeto é um CRUD completo desenvolvido para o gerenciamento seguro de sen
 ## 🛠️ Funcionalidades
 
 ## 📈 Próximos Passos
-- [ ] Implementar **Aggregation Framework** para dashboard de estatísticas.
+- [X] Implementar **Aggregation Framework** para dashboard de estatísticas.
+- [X] Refatoração de nomes de variáveis para maior legibilidade.
+- [X] Responsividade para diversos tamanhos de tela.
 - [ ] Adicionar camada de criptografia para as senhas no banco.
-- [ ] Refatoração de nomes de variáveis para maior legibilidade.
-- [ ] Responsividade para diversos tamanhos de tela.
+- [ ] Validação dos campos enviados ao banco.
 
