@@ -4,10 +4,12 @@
 }
 
 body {
-    @media (min-width:768px){
-        --aberto:100%;
-        --fechado:-100%;  
+    @media (min-width:1024px){
+        --tamanhoDivForm: 30vw;
+        --aberto: calc(50vw - var(--tamanhoDivForm)/2);
+        --fechado:-100vw;  
     }
+
     @keyframes labelAnimation {
         from {
             top: 0.6rem;
@@ -170,6 +172,13 @@ body {
             font-size: 1.3rem;
             padding: 0.5rem;
 
+            @media (min-width:1024px){
+                width: var(--tamanhoDivForm);
+                left: 0;
+                z-index: 1;
+                transform: translateX(var(--fechado));
+            }
+
             .formTextos{
                 display: flex;
                 gap: 0.6rem;
@@ -221,6 +230,9 @@ body {
                             @media (min-width:768px){
                                 transform: translateY(-2.5rem);
                             }
+                            @media (min-width:1024px){
+                                transform: translateY(-2rem);
+                            }
                         }
                     }
 
@@ -236,7 +248,7 @@ body {
                             transform: translateY(2.2rem);
                             color: var(--fonte);
                             @media (min-width: 768px) {
-                                transform: translateY(2.0rem);
+                                transform: translateY(2.2rem);
                             }
                         }
                     }

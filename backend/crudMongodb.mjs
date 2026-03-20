@@ -17,13 +17,21 @@ app.listen(3000, ()=>{
 
 //Cada Schema mapeia para uma coleção no mongodb e define a forma dos documentos dentro dessa coleção
 const porfolioSenhas = new mongoose.Schema({
-    senha: String,
+    senha: {
+        type: String,
+        required: true,
+        trim:1, //Remove espaço em branco no inicio e fim.
+        select:false, //o Mongoose esconde esse campo automaticamente nas buscas com find.
+    },
     tipo: {
         type: String,
         enum: ['Jogos', 'Streaming', 'Email', 'Serviços'],
         required: true
     },
-    servico: String
+    servico: {
+        type: String,
+        required: true,
+    }
 }, { collection: 'portfolio' });
 //Pelo que eu entendi a linha acima força o mongoose a utilizar a colection
 
