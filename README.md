@@ -1,8 +1,8 @@
-# Gerenciador de Credenciais
+# 🔒 Gerenciador de Credenciais
 
-Este projeto é um CRUD completo desenvolvido para o gerenciamento seguro de senhas e serviços. O objetivo principal foi aplicar conceitos avançados de integração entre Frontend (React) e Backend (Node.js/MongoDB).
+Este projeto é um CRUD completo desenvolvido para o gerenciamento seguro de senhas. O objetivo principal foi aplicar conceitos avançados de integração entre Frontend (React) e Backend (Node.js/MongoDB).
 
-## Tecnologias Utilizadas
+## 💻 Tecnologias Utilizadas
 **Frontend:**
 * **REACT + VITE** Para uma interface rápida e otimizada.
 * **SCSS:** para estilização
