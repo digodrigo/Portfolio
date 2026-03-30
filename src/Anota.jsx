@@ -30,13 +30,19 @@ function teste(){
 
     const [pagina, setPagina] = useState(1);
 
-    const [paginaTotal, setPaginaTotal] = useState()
+    const [paginaTotal, setPaginaTotal] = useState();
+
+    const [inputEmail, setInputEmail] = useState();
+
+    const [isVisible, setVisibilidade] = useState(true);
+
+    const [mostrarSenha, setMostrarSenha] = useState(true);
+
+    const [tipoInputSenha, setTipoInputSenha] = useState("password");
 
     const dadosNomeFiltrados = dadosAggregate.map(nomes=>nomes._id);
 
     const dadosQntFiltrados = dadosAggregate.map(qnt=>qnt.quantidade);
-
-    
 
     const grafico = {
         responsive: true,
@@ -80,11 +86,13 @@ function teste(){
         }
     };
 
-    async function salvar(inputValSenha, inputValServico , inputValEspecifico) {
-        let arrayEnviar = { senha: inputValSenha, tipo: inputValServico, servico: inputValEspecifico};
+    async function salvar(inputValEmail, inputValSenha, inputValServico , inputValEspecifico) {
+        let arrayEnviar = {email:inputValEmail, senha: inputValSenha, tipo: inputValServico, servico: inputValEspecifico};
+        setInputEmail("");
         setInputSenha("");
         setInputServico("");
         setInputEspecifico("");
+
         try {
             const requestFetch = await fetch("http://localhost:3000/carteira", {
                 method: "POST",
@@ -93,21 +101,27 @@ function teste(){
                 },
                 body: JSON.stringify(arrayEnviar)
             });
+            console.log(requestFetch.status);        
             const resultado = await requestFetch.json()
-            if (requestFetch.status == 201) {
+            if (requestFetch.ok) {
                 setResultadoReq("Sucesso")
                 setTimeout(()=>{
                     setResultadoReq("");
-                }, 2000)
+                }, 4000)
                 buscaDados();
             } else {
-                setResultadoReq("Falha")
+                setResultadoReq("Falha");
+                console.log(resultado);
+                
                 setTimeout(()=>{
                     setResultadoReq("");
-                }, 2000)
+                }, 4000)
             }
-        } catch {
-            console.log("Deu erro");
+        } catch(err) {
+            setResultadoReq(err)
+            setTimeout(()=>{
+                setResultadoReq("");
+            }, 5000)
         }
     };
 
@@ -207,13 +221,24 @@ function teste(){
         }
     }
 
+    function setPutaquepariu(params) {
+        setInputEmail(params.target.innerText);
+        setVisibilidade(false);
+    }
+
+    function mostrarInputSenha(params, tipo){
+        setMostrarSenha(params);
+        setTipoInputSenha(tipo);
+    }
+
     useEffect(() => {
         buscaDados();
         filtro();
     }, [pagina]);//o useEffect vai carregar as funções declaradas dentro dos {} sempre que o que estiver dentro do [] for alterado.
 
     return (
-        <><div className="vault">
+        <>
+        <div className="vault">
             <div className="tabela">
                 <div className='botoesForm'>
                     <div className="botaoAbrirForm" onClick={() => setActive("Aberto")}>
@@ -233,6 +258,7 @@ function teste(){
                 <table>
                     <thead>
                         <tr className='trHeader'>
+                            <th>E-mail</th>
                             <th>Senha</th>
                             <th>Tipo</th>
                             <th>Serviço</th>
@@ -242,6 +268,7 @@ function teste(){
                     <tbody>
                         {dadosBD.map((tabela) =>
                             <tr key={tabela._id}>
+                                <td>{tabela.email}</td>
                                 <td>{tabela.senha}</td>
                                 <td>{tabela.tipo}</td>
                                 <td>{tabela.servico}</td>
@@ -254,8 +281,8 @@ function teste(){
                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                                         <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
                                     </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={()=> copiar(tabela.senha)} width="35" height="35" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={()=> copiar(tabela.senha)} width="35" height="35" fill="currentColor" className="bi bi-copy" viewBox="0 0 16 16">
+                                        <path fillRule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
                                     </svg>
                                 </td>
                             </tr>
@@ -272,24 +299,45 @@ function teste(){
                     <p> Formulario de adição na lista</p>                   
                 </div>
                 <form>
-                    <input type="text" id="senha" value={inputSenha} onChange={(e) => setInputSenha(e.target.value)} required autoComplete="off" />
-                    <label htmlFor='senha'>Senha</label>
-                    <select name="serv" id="serv" value={inputServico} onChange={(e) => setInputServico(e.target.value)} required>
-                        <option value=""></option>
-                        <option value="Jogos">Jogos</option>
-                        <option value="Streaming">Streaming</option>
-                        <option value="Email">Email</option>
-                        <option value="Serviços">Serviços</option>
-                    </select>
-                    <label htmlFor='serv'>Serviço</label>
-                    {inputServico !== "" && (
-                        <input type="text" id='especifico' value={inputEspecifico} onChange={(e) => setInputEspecifico(e.target.value)} />
-                    )}
-                    {inputServico !== "" && (
-                        <label htmlFor='especifico'>{inputServico}</label>
-                    )}
+                    <div className='divFormEmail'>
+                        <input type="email" id="email" value={inputEmail} onChange={(e)=> setInputEmail(e.target.value)} required/>
+                        {inputEmail && isVisible &&(
+                            <p onClick={(e)=> setPutaquepariu(e)}>{inputEmail}@outlook.com</p>
+                        )}
+                        {inputEmail && isVisible &&(
+                            <p onClick={(e)=> setPutaquepariu(e)}>{inputEmail}@gmail.com</p>
+                        )}
+                        <label htmlFor="email">Email</label>                        
+                    </div>       
+
+                    <div className='divFormSenha'>
+                        <input type={tipoInputSenha} id="senha" value={inputSenha} onChange={(e) => setInputSenha(e.target.value)} required autoComplete="current-password"/>
+                        <label htmlFor='senha'>Senha</label>
+                        {mostrarSenha && (<i className="bi bi-eye-fill" onClick={()=>mostrarInputSenha(false, "text")}></i> )}
+                        {!mostrarSenha && (<i className="bi bi-eye-slash-fill" onClick={()=>mostrarInputSenha(true, "password")}></i> )}           
+                    </div>
+
+                    <div className='divFormServico'>
+                        <select name="serv" id="serv" value={inputServico} onChange={(e) => setInputServico(e.target.value)} required>
+                            <option value=""></option>
+                            <option value="Jogos">Jogos</option>
+                            <option value="Streaming">Streaming</option>
+                            <option value="Email">Email</option>
+                            <option value="Serviços">Serviços</option>
+                        </select>
+                        <label htmlFor='serv'>Serviço</label>                        
+                    </div>
+                    <div className='divFormEspecifico'>
+                        {inputServico !== "" && (
+                            <input type="text" id='especifico' value={inputEspecifico} onChange={(e) => setInputEspecifico(e.target.value)} required />
+                        )}
+                        {inputServico !== "" && (
+                            <label htmlFor='especifico'>{inputServico}</label>
+                        )}                        
+                    </div>
+
                     {botaoEditar === "" && (
-                        <input type='button' value="Enviar" onClick={() => salvar(inputSenha, inputServico, inputEspecifico)} />
+                        <input type='button' value="Enviar" onClick={() => salvar(inputEmail, inputSenha, inputServico, inputEspecifico)} />
                     )}
                     {botaoEditar === "Editando" && (
                         <input type='button' value="Editar" onClick={() => enviarEditar(idTabela, inputSenha, inputServico)} />
@@ -297,7 +345,7 @@ function teste(){
                 </form>
                 {resultadoReq !== "" && (
                     <div className={resultadoReq}>
-                        <p>{`${resultadoReq}ao adicionar senha`}</p>
+                        <p>{`${resultadoReq} ao adicionar senha`}</p>
                     </div>
                 )}
             </div>
@@ -319,7 +367,6 @@ function teste(){
             )}
             <Outlet />            
         </div>
-
         </>
     )
 }

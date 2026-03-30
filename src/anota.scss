@@ -1,13 +1,13 @@
-:root{
-    --aberto:100%;
-    --fechado:-100%;
+:root {
+    --aberto: 100%;
+    --fechado: -100%;
 }
 
 body {
-    @media (min-width:1024px){
+    @media (min-width:1024px) {
         --tamanhoDivForm: 30vw;
         --aberto: calc(50vw - var(--tamanhoDivForm)/2);
-        --fechado:-100vw;  
+        --fechado: -100vw;
     }
 
     @keyframes labelAnimation {
@@ -41,7 +41,7 @@ body {
         to {
             transform: translateX(var(--fechado));
             opacity: 0;
-        }  
+        }
     }
 
     @keyframes divGraficoAnimationAberto {
@@ -70,23 +70,23 @@ body {
 
     .main {
 
-            @media (min-width:1024px){
-                height: 73vh;
-            }
+        @media (min-width:1024px) {
+            height: 73vh;
+        }
 
-        .vault{
+        .vault {
 
-            @media (min-width:1024px){
+            @media (min-width:1024px) {
                 display: grid;
-                grid-template-areas: 
-                "grafico  tabela"
-                "footer  footer";
+                grid-template-areas:
+                    "tabela  tabela"
+                    "footer  footer";
                 grid-template-columns: 1fr 1fr;
                 height: 100%;
             }
 
-            .tabela{
-                @media (min-width:1024px){
+            .tabela {
+                @media (min-width:1024px) {
                     grid-area: tabela;
                 }
 
@@ -96,20 +96,23 @@ body {
                     width: 100%;
                     font-size: 0;
 
-                    @media (min-width:1024px){
+                    @media (min-width:1024px) {
                         margin: 0;
                         padding: 1rem;
                     }
-                    .botaoAbrirForm, .botaoAbrirEstatistica {
+
+                    .botaoAbrirForm,
+                    .botaoAbrirEstatistica {
                         width: 50%;
                         display: flex;
                         gap: 0.1rem;
                         justify-content: center;
                         align-items: center;
+
                         p {
                             font-size: 1rem;
 
-                            @media (min-width:768px){
+                            @media (min-width:768px) {
                                 font-size: 1.5rem;
                             }
                         }
@@ -135,6 +138,7 @@ body {
                         tr {
                             background-color: rgb(0, 255, 76);
                             color: black;
+
                             th {
                                 padding: 1rem;
                             }
@@ -144,10 +148,12 @@ body {
                     tbody {
                         text-align: center;
                         vertical-align: center;
+
                         @media (min-width: 768px) {
                             width: 95%;
                             font-size: 1.5rem;
                         }
+
                         tr {
                             td {
                                 padding: 1rem;
@@ -172,14 +178,14 @@ body {
             font-size: 1.3rem;
             padding: 0.5rem;
 
-            @media (min-width:1024px){
+            @media (min-width:1024px) {
                 width: var(--tamanhoDivForm);
                 left: 0;
                 z-index: 1;
                 transform: translateX(var(--fechado));
             }
 
-            .formTextos{
+            .formTextos {
                 display: flex;
                 gap: 0.6rem;
             }
@@ -194,9 +200,8 @@ body {
                 padding: 1rem;
             }
 
-            form{
+            form {
                 padding: 1rem;
-                position: relative;
                 display: flex;
                 flex-direction: column;
                 gap: 1.5rem;
@@ -205,26 +210,11 @@ body {
                     font-size: 1.2rem;
                 }
 
-                input, select {
-                    padding: 1rem;
-                    border: 0px solid transparent;
-                    border-radius: 10px;
+                .divFormEmail, .divFormSenha, .divFormEspecifico{
+                    position: relative;
 
-                    &[type=button] {
-                        font-size: medium;
-                    }
-
-                    &:focus {
-                        outline: none;
-                    }
-
-                    &:nth-of-type(1) {
-                        &:focus, :valid {
-                            outline: none;
-                        }
-
-                        &:focus~label:nth-of-type(1),
-                        &:valid~label:nth-of-type(1) {
+                    input{
+                        &:focus~label, &:valid~label{
                             transform: translateY(-2rem);
                             color: var(--fonte);
                             @media (min-width:768px){
@@ -236,67 +226,61 @@ body {
                         }
                     }
 
-                    &:nth-of-type(2) {
-
-                        &:focus,
-                        :valid {
-                            outline: none;
-                        }
-
-                        &:focus~label:nth-of-type(3),
-                        &:valid~label:nth-of-type(3) {
-                            transform: translateY(2.2rem);
-                            color: var(--fonte);
-                            @media (min-width: 768px) {
-                                transform: translateY(2.2rem);
-                            }
-                        }
+                    label {
+                        left: 6px;
+                        top: 11px;
                     }
                 }
 
-                select {
-                    &:nth-of-type(1) {
-                        &:focus~label:nth-of-type(2),
-                        &:valid~label:nth-of-type(2) {
+                .divFormSenha{
+                    position: relative;
+                    .bi-eye-fill, .bi-eye-slash-fill{
+                        align-self: center;
+                        color: black;
+                        position: absolute;
+                        right: 16px;
+                        font-size: 1.4rem;
+                    }
+                }
+
+                .divFormServico{
+                    position: relative;
+
+                    select {
+                        &:focus~label,&:valid~label{
                             transform: translateY(-2rem);
                             color: var(--fonte);
                         }
                     }
+
+                    label {
+                        left: 6px;
+                        top: 11px;
+                    }
                 }
 
-                label {
-                    position: absolute;
-                    color: black;
-                    transition: all 1s ease-in-out;
+                input, select {
+                    padding: 1rem;
+                    border: 0px solid transparent;
+                    border-radius: 10px;
+
+                    &[type=button] {
+                        font-size: medium;
+                    }
+
+                    &:focus, :valid {
+                        outline: none;
+                    }
+                }
+
+                label{
+                    color: var(--background);
                     pointer-events: none;
-                    @media (min-width: 768px) {
-                        font-size: 1.6rem;
-                    }
-                    &:nth-of-type(1) {
-                        top: 1.5rem;
-                        left: 1.5rem;
+                    transition: all 1s ease-in-out;
+                    position: absolute;
 
-                        @media (min-width: 768px) {
-                            top: 1.2rem;
-                        }
-                    }
+                    @media (min-width:1024px){
 
-                    &:nth-of-type(2) {
-                        top: 6rem;
-                        left: 1.5rem;
-
-                        @media (min-width: 768px) {
-                            top: 5.8rem;
-                        }
-                    }
-
-                    &:nth-of-type(3) {
-                        top: 6.2rem;
-                        left: 1.5rem;
-
-                        @media (min-width: 768px) {
-                            top: 6rem;
-                        }
                     }
                 }
             }
@@ -306,15 +290,13 @@ body {
             width: 100%;
             background-color: var(--background);
 
-            @media (max-width:700){
+            @media (max-width:700) {
                 position: absolute;
                 left: -105%;
             }
 
-            @media (min-width:1024px){
-                width: 60%;
-                grid-area: grafico;
-                justify-self: center;
+            @media (min-width:1024px) {
+                opacity: 0;
             }
 
             .divCanvas {
@@ -326,25 +308,25 @@ body {
                     top: 41px;
                     left: 5px;
 
-                    @media (min-width:1024px){
-                        opacity: 0;
-                    }
+                    @media (min-width:1024px) {}
                 }
             }
         }
 
-        .divPaginas{
-            @media (min-width:1024px){
+        .divPaginas {
+            @media (min-width:1024px) {
                 grid-area: footer;
                 text-align: center;
                 justify-self: center;
                 align-self: center;
             }
+
             display: flex;
             gap: 0.5rem;
             width: 15%;
-            p{
-                background-color:var(--destaque);
+
+            p {
+                background-color: var(--destaque);
                 color: var(--fonte);
                 font-size: 2rem;
                 width: 33%;

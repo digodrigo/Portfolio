@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import express from 'express';
 import cors from 'cors';
 import { Db } from 'mongodb';
+import joi from 'joi';
 
 const {Schema} = mongoose;
 
@@ -17,11 +18,14 @@ app.listen(3000, ()=>{
 
 //Cada Schema mapeia para uma coleção no mongodb e define a forma dos documentos dentro dessa coleção
 const porfolioSenhas = new mongoose.Schema({
+    email: {
+        type: String
+    },
     senha: {
         type: String,
         required: true,
-        trim:1, //Remove espaço em branco no inicio e fim.
-        select:false, //o Mongoose esconde esse campo automaticamente nas buscas com find.
+        trim: 1, //Remove espaço em branco no inicio e fim.
+       
     },
     tipo: {
         type: String,
@@ -35,20 +39,35 @@ const porfolioSenhas = new mongoose.Schema({
 }, { collection: 'portfolio' });
 //Pelo que eu entendi a linha acima força o mongoose a utilizar a colection
 
+const middlewareTeste = function (req, res, next){
+    const schema = joi.object({//validação com a biblioteca joi
+        email: joi.string()
+            .email({ minDomainSegments: 2, tlds: { allow: false } })
+            .required(),
+        senha: joi.string()
+            .alphanum()
+            .required(),
+        tipo: joi.string().valid('Jogos', 'Streaming', 'Email').required(),
+
+        servico: joi.string().required(),
+    })
+
+    const salvar = schema.validate(req.body);
+    if (salvar.error){
+        return res.status(400).json(salvar);
+    }
+    next();
+} 
 
 await mongoose.connect('mongodb://127.0.0.1:27017/admin');
 const senha = mongoose.model("portfolio", porfolioSenhas);
 
-
-app.post("/carteira", async (req,res)=>{ 
-    //try como o nome ja diz vai tentar realizar os comandos que estão dentro do bloco e caso falhe vai cair no catch
-    try{
-        const novaSenha = new senha(req.body);
-        //req.body recebe os dados que vieram do front-end
+app.post("/carteira", middlewareTeste, async (req,res)=>{//se eu entendi o middlewareTeste vai ser chamado sempre que tiver uma req post nova e vai executar a função  
+    try{//try como o nome ja diz vai tentar realizar os comandos que estão dentro do bloco e caso falhe vai cair no catch
+        const novaSenha = new senha(req.body); //req.body recebe os dados que vieram do front-end
         await novaSenha.save();
-        res.status(201).json({mensagem:"Dados salvos com sucesso!"})
-        //res.status vai ser acionado quando o status da req for 201 e vai mandar o .json() para o frontend
-    }catch{
+        res.status(201).json({mensagem:"Dados salvos com sucesso!"});//res.status vai ser acionado quando o status da req for 201 e vai mandar o .json() para o frontend        
+    }catch (err){
         res.status(500).json({mensagem:"Dados NÃO salvos com sucesso!"})
     }
 })
@@ -115,7 +134,8 @@ app.put("/carteira/:id", async (req,res)=>{
     }
 })
 
-/*app.get("/carteira/filtro/:tag", async (req, res)=>{
+/*
+app.get("/carteira/filtro/:tag", async (req, res)=>{
     try {
         const filtro = req.params.tag;
         
