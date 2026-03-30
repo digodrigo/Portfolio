@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.5.1",
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "joi": "^18.0.2",
     "mongodb": "^7.1.0",
     "mongoose": "^9.2.1",
     "react": "^19.2.0",
